@@ -26,7 +26,13 @@ fn calculate_position(acceleration: Vec2, position: Vec2, velocity: &mut Vec2, d
 
 fn main() {
     App::new()
-        .add_plugins(DefaultPlugins)
+        .add_plugins(DefaultPlugins.set(WindowPlugin {
+            primary_window: Some(Window {
+                title: "N-Body Simulator".into(),
+                ..default()
+            }),
+            ..default()
+        }))
         .add_systems(Startup, setup)
         .add_systems(Update, move_body)
         .run();
