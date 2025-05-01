@@ -1,9 +1,11 @@
+use std::f32::consts::TAU;
+use std::f32;
 use bevy::math::Vec2;
 use crate::body::Body;
 use bevy::prelude::Resource;
 
 pub const GRAVITATIONAL_CONSTANT: f32 = 1.0;
-const DT: f32 = 0.9;
+pub const DT: f32 = 0.000_0_1;
 
 #[derive(Resource)]
 pub struct Simulation {
@@ -60,40 +62,6 @@ impl Simulation {
 
         let bodies = vec![body1, body2, body3];
         Simulation { bodies }
-    }
-
-    pub fn hierarchical_three_body_system() -> Self {
-        let mass1 = 1.0;
-        let mass2 = 0.1; 
-        let mass3 = 0.01;
-        
-        let r1 = 100.0;
-        let r2 = 50.0;
-        
-        let v2 = (GRAVITATIONAL_CONSTANT * mass1 / r1).sqrt();
-        let v3 = (GRAVITATIONAL_CONSTANT * mass2 / r2).sqrt();
-        
-        let body1 = Body {
-            mass: mass1,
-            position: Vec2::new(0.0, 0.0),
-            velocity: Vec2::new(0.0, 0.0),
-        };
-        
-        let body2 = Body {
-            mass: mass2,
-            position: Vec2::new(r1, 0.0),
-            velocity: Vec2::new(0.0, v2),
-        };
-        
-        let body3 = Body {
-            mass: mass3,
-            position: Vec2::new(r1 + r2, 0.0),
-            velocity: Vec2::new(0.0, v2 + v3),
-        };
-
-        Simulation {
-            bodies: vec![body1, body2, body3],
-        }
     }
     
     pub fn update(&mut self) {

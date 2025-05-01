@@ -6,4 +6,8 @@ edition = "2024"
 [dependencies]
 bevy = "0.15.3"
 bevy_egui = "0.33.0"
+fastrand = "2.3.0"
+pollster = "0.4.0"
+wgpu = "25.0.0"
+bytemuck = "1.22.0"
 

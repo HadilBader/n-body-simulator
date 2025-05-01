@@ -1,9 +1,10 @@
 mod body;
 mod simulation;
+mod gpu_comp;
 
 use bevy::prelude::*;
 use bevy::prelude::Component;
-use crate::simulation::Simulation;
+use crate::simulation::{Simulation, DT};
 
 const DENSITY: f32 = 5.0;
 
@@ -27,16 +28,18 @@ fn setup(mut commands: Commands, mut meshes: ResMut<Assets<Mesh>>, mut materials
 
     for body in simulation.bodies.iter() {
         commands.spawn((
-            Mesh2d(meshes.add(Circle::new(5.0))),
+            Mesh2d(meshes.add(Circle::new(body.mass / DENSITY))),
             MeshMaterial2d(materials.add(Color::WHITE)),
             Transform::from_translation(Vec3::new(body.position.x, body.position.y, 0.0)),
         ));
     }
-    
+
 }
 
 fn update_simulation(mut simulation: ResMut<Simulation>, mut query: Query<(&mut Transform)>) {
-    simulation.update();
+    for _ in 0..(1.0 / DT) as i32 {
+        simulation.update();
+    }
     for (i, mut transform) in query.iter_mut().enumerate() {
         if let Some(body) = simulation.bodies.get(i) {
             transform.translation.x = body.position.x;
